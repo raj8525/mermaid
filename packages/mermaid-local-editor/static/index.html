@@ -4,27 +4,77 @@
     <meta charset="utf-8" />
     <title>Mermaid Local Editor</title>
 
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=viewer-password-1" />
 
     <script src="./vendor/mermaid.min.js"></script>
     <script src="./vendor/purify.min.js"></script>
 
-    <script type="module" src="./app.js"></script>
+    <script type="module" src="./app.js?v=viewer-password-1"></script>
   </head>
-  <body>
+  <body class="viewer-pending">
     <div id="toolbar">
       <button id="toggleToolbar" title="Toggle toolbar">☰</button>
       <select id="diagrams"></select>
-      <input id="name" placeholder="Enter diagram name" />
-      <button id="save">💾 Save</button>
-      <button id="new">➕ New</button>
-      <button id="del">🗑 Delete</button>
-      <button id="resetView">↺ Reset View</button>
-      <button id="exportSvg">⬇ Export SVG</button>
+      <div id="adminMenu" hidden>
+        <label>
+          图表名称
+          <input id="name" placeholder="输入图表名称" />
+        </label>
+        <label>
+          普通查看密码
+          <input id="viewerPasswordSetting" type="password" placeholder="输入新密码" autocomplete="new-password" />
+        </label>
+        <div class="admin-actions">
+          <button id="save">保存</button>
+          <button id="new">新建</button>
+          <button id="hideToggle" type="button">隐藏</button>
+          <button id="setViewerPassword" type="button">设置查看密码</button>
+          <button id="clearViewerPassword" type="button">清空查看密码</button>
+          <button id="del">删除</button>
+        </div>
+        <div id="viewerPasswordStatus" class="admin-status" aria-live="polite"></div>
+      </div>
+      <button id="resetView">重置视图</button>
+      <button id="annotationMode" type="button">批注模式</button>
+      <button id="deleteAnnotation" type="button" hidden disabled>删除批注</button>
+      <label id="searchBox" class="search-box">
+        <span>查找</span>
+        <input id="searchInput" type="search" placeholder="输入关键词，回车下一个" autocomplete="off" />
+        <span id="searchCount" aria-live="polite"></span>
+      </label>
     </div>
 
-    <div id="main">
-      <textarea id="srcPanel"></textarea>
+    <div id="viewerPasswordDialog" class="password-dialog" hidden>
+      <div class="password-card" role="dialog" aria-modal="true" aria-label="查看密码">
+        <h2>请输入查看密码</h2>
+        <p>这个页面已开启普通查看密码。无需用户名，输入密码后可查看图表。</p>
+        <label>
+          查看密码
+          <input id="viewerPasswordInput" type="password" autocomplete="current-password" />
+        </label>
+        <div id="viewerPasswordError" class="password-error" hidden>查看密码错误</div>
+        <div class="password-actions">
+          <button id="confirmViewerPassword" type="button">进入</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="passwordDialog" class="password-dialog" hidden>
+      <div class="password-card" role="dialog" aria-modal="true" aria-label="管理员密码">
+        <label>
+          管理员密码
+          <input id="adminPasswordInput" type="password" autocomplete="current-password" />
+        </label>
+        <div id="adminPasswordError" class="password-error" hidden>管理员密码错误</div>
+        <div class="password-actions">
+          <button id="cancelAdminPassword" type="button">取消</button>
+          <button id="confirmAdminPassword" type="button">确认</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="main" class="source-collapsed">
+      <textarea id="srcPanel" wrap="off"></textarea>
       <div id="preview"></div>
     </div>
   </body>

@@ -2,11 +2,15 @@ export function createNavigation({ state, preview, srcPanel, applyTransform }) {
   let navNodes = [];
   let navIndex = 0;
 
+  function getSvg() {
+    return state.svgRef || state.iframeRef?.contentDocument?.querySelector('svg');
+  }
+
   function rebuildNavNodes() {
     navNodes = [];
     navIndex = 0;
 
-    const svg = state.iframeRef?.contentDocument?.querySelector('svg');
+    const svg = getSvg();
     if (!svg) {
       return;
     }
@@ -21,7 +25,7 @@ export function createNavigation({ state, preview, srcPanel, applyTransform }) {
   }
 
   function highlightCurrentNode() {
-    const svg = state.iframeRef?.contentDocument?.querySelector('svg');
+    const svg = getSvg();
     if (!svg) {
       return;
     }

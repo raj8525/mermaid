@@ -20,6 +20,7 @@
     "copy:mermaid": "cpy packages/mermaid/dist/mermaid.min.js packages/mermaid/dist/mermaid-local-editor/vendor/ --flat",
     "copy:editor": "cpy \"packages/mermaid-local-editor/static/**/*\" packages/mermaid/dist/mermaid-local-editor",
     "serve:dist": "sirv packages/mermaid/dist/mermaid-local-editor --port 8081 --dev --no-clear",
+    "serve:editor:sqlite": "node packages/mermaid-local-editor/server.mjs",
     "build": "pnpm build:esbuild && pnpm build:types",
     "build:esbuild": "pnpm run -r clean && tsx .esbuild/build.ts",
     "build:mermaid": "pnpm build:esbuild --mermaid",

@@ -25,6 +25,7 @@ package-lock.json
 cypress/platform/current.html
 cypress/platform/experimental.html
 local/
+packages/mermaid-local-editor/data/
 
 _site
 Gemfile.lock
