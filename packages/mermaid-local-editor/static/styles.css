@@ -386,6 +386,32 @@ textarea:focus {
   pointer-events: none;
 }
 
+.sticky-sequence-actors {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sticky-sequence-actor {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+  border: 1px solid #b68a4b;
+  border-radius: 4px;
+  background: #102f46;
+  color: #fff6df;
+  box-shadow:
+    0 10px 24px rgba(15, 23, 42, 0.18),
+    0 0 0 1px rgba(255, 246, 223, 0.18) inset;
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: center;
+  white-space: nowrap;
+}
+
 #srcPanel {
   z-index: 1;
 }

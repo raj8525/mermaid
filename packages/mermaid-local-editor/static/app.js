@@ -6,6 +6,7 @@ import { createNavigation } from './js/navigation.js';
 import { createSearch } from './js/search.js?v=search-1';
 import { createAnnotations } from './js/annotations.js?v=annotations-manual-save-1';
 import { createVerticalScrollbar } from './js/vertical-scrollbar.js?v=scrollbar-6';
+import { createStickySequenceActors } from './js/sticky-sequence-actors.js?v=sticky-actors-1';
 
 initMermaid();
 
@@ -19,6 +20,7 @@ const urlParams = new URLSearchParams(location.search);
 const requestedDiagram = urlParams.get('diagram');
 let annotations;
 let verticalScrollbar;
+let stickySequenceActors;
 
 const navigation = createNavigation({
   state,
@@ -42,6 +44,7 @@ function render() {
     applyTransform,
     rebuildNavNodes: navigation.rebuildNavNodes,
     afterRender: () => {
+      stickySequenceActors?.rebuild();
       annotations?.render();
       search.refreshAfterRender();
     },
@@ -49,10 +52,12 @@ function render() {
     requestAnimationFrame(() => {
       applyTransform();
       verticalScrollbar?.sync();
+      stickySequenceActors?.sync();
     });
     setTimeout(() => {
       applyTransform();
       verticalScrollbar?.sync();
+      stickySequenceActors?.sync();
     }, 250);
   });
 }
@@ -90,6 +95,7 @@ function applyTransform() {
   svg.style.transform = `translate(${state.panX}px, ${state.panY}px) scale(${state.scale})`;
   annotations?.applyTransform();
   verticalScrollbar?.sync();
+  stickySequenceActors?.sync();
 
   void storage.updateCurrent({
     view: { scale: state.scale, panX: state.panX, panY: state.panY },
@@ -109,6 +115,11 @@ verticalScrollbar = createVerticalScrollbar({
   applyTransform,
 });
 
+stickySequenceActors = createStickySequenceActors({
+  preview,
+  getSvg: getCurrentSvg,
+});
+
 setupUI({
   src: srcPanel,
   diagramsSelect,
@@ -122,7 +133,9 @@ setupUI({
 
 navigation.setupKeyboardNav();
 const initialDiagram =
-  requestedDiagram && storage.diagrams[requestedDiagram] && !storage.diagrams[requestedDiagram].hidden
+  requestedDiagram &&
+  storage.diagrams[requestedDiagram] &&
+  !storage.diagrams[requestedDiagram].hidden
     ? requestedDiagram
     : !storage.diagrams[storage.current]?.hidden
       ? storage.current
